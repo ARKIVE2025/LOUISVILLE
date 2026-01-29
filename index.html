@@ -578,13 +578,133 @@
             .form-box { padding: 35px 25px; }
         }
 
+        /* Fixed Video Player */
+        .video-slot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            height: 180px;
+            z-index: 1000;
+            border: 3px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--black);
+        }
+
+        .video-slot iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .video-thumbnail:hover img {
+            transform: scale(1.05);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(139, 0, 0, 0.9);
+            color: var(--gold);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 3px solid var(--gold);
+            transition: all 0.3s ease;
+            padding-left: 5px;
+        }
+
+        .video-thumbnail:hover .play-button {
+            background: var(--gold);
+            color: var(--maroon);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .video-close:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: scale(1.1);
+        }
+
+        .video-slot.hidden {
+            display: none;
+        }
+
         @media (max-width: 480px) {
             .cta-buttons { flex-direction: column; align-items: stretch; }
             .btn { width: 100%; }
+            
+            .video-slot {
+                width: calc(100% - 40px);
+                height: auto;
+                aspect-ratio: 16/9;
+                bottom: 10px;
+                right: 20px;
+                left: 20px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Fixed Video Player -->
+    <div class="video-slot" id="videoSlot">
+        <button class="video-close" onclick="closeVideo()">×</button>
+        <div class="video-thumbnail" id="videoThumbnail" onclick="playVideo()">
+            <img src="https://img.youtube.com/vi/EKFZ4WuLoNo/maxresdefault.jpg" alt="Play video">
+            <div class="play-button">▶</div>
+        </div>
+        <iframe 
+            id="videoFrame"
+            style="display: none;"
+            src="" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
 
     <section class="hero">
         <div class="est-badge">
@@ -701,6 +821,22 @@
     </footer>
 
     <script>
+        // Play video function
+        function playVideo() {
+            const thumbnail = document.getElementById('videoThumbnail');
+            const iframe = document.getElementById('videoFrame');
+            
+            // Hide thumbnail and show iframe with autoplay
+            thumbnail.style.display = 'none';
+            iframe.style.display = 'block';
+            iframe.src = 'https://www.youtube.com/embed/EKFZ4WuLoNo?autoplay=1&mute=0&loop=1&playlist=EKFZ4WuLoNo&controls=1';
+        }
+
+        // Close video function
+        function closeVideo() {
+            document.getElementById('videoSlot').classList.add('hidden');
+        }
+
         // Generate sparks/embers
         const container = document.getElementById('spark-container');
         for (let i = 0; i < 40; i++) {
