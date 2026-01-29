@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle of the Bones | Louisville BBQ Championship</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #8B0000;
+            --deep-maroon: #5C0000;
+            --white: #ffffff;
+            --cream: #FAF9F6;
+            --black: #0a0a0a;
+            --gold: #C9A961;
+            --dark-gold: #B8953D;
+            --charcoal: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--cream);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Premium Badge */
+        .est-badge {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            background: rgba(201, 169, 97, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .est-badge .year {
+            font-size: 1.8rem;
+            color: var(--gold);
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .est-badge .est {
+            font-size: 0.9rem;
+            color: var(--cream);
+            letter-spacing: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('wildcat.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(139, 0, 0, 0.2) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Decorative Border */
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--deep-maroon) 0%, var(--gold) 50%, var(--deep-maroon) 100%);
+        }
+
+        /* Sparks */
+        .sparks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .spark {
+            position: absolute;
+            bottom: -10px;
+            width: 3px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(1px);
+            animation: rise var(--duration) linear infinite;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(var(--drift)) scale(0); opacity: 0; }
+        }
+
+        /* Hero Content */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 40px;
+            max-width: 1100px;
+        }
+
+        .event-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--gold);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            letter-spacing: 8px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 12vw, 7rem);
+            font-weight: 900;
+            margin: 0;
+            line-height: 0.95;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.8));
+        }
+
+        .tagline {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--cream);
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            margin: 25px 0;
+            font-weight: 300;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        .prize-section {
+            margin: 35px 0;
+            padding: 25px 40px;
+            background: rgba(139, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--gold);
+            border-left: 8px solid var(--gold);
+            display: inline-block;
+        }
+
+        .prize-label {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            display: block;
+        }
+
+        .prize-amount {
+            font-family: 'Playfair Display', serif;
+            color: var(--cream);
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 22px 50px;
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: normal;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            border: 2px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn-primary {
+            background-color: var(--maroon);
+            color: var(--cream);
+        }
+
+        .btn-primary:hover {
+            color: var(--charcoal);
+            border-color: var(--gold);
+            box-shadow: 0 8px 30px rgba(201, 169, 97, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--gold);
+        }
+
+        .btn-secondary:hover {
+            color: var(--charcoal);
+            box-shadow: 0 8px 30px rgba(201, 169, 97, 0.4);
+        }
+
+        /* Important Dates Section */
+        .dates-strip {
+            background: linear-gradient(90deg, var(--deep-maroon) 0%, var(--maroon) 50%, var(--deep-maroon) 100%);
+            padding: 50px 20px;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .dates-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .date-card {
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(201, 169, 97, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .date-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(201, 169, 97, 0.3);
+            border-color: var(--gold);
+        }
+
+        .date-label {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .date-value {
+            font-family: 'Playfair Display', serif;
+            color: var(--cream);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .date-detail {
+            color: rgba(250, 249, 246, 0.7);
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--cream);
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .section-description {
+            color: rgba(250, 249, 246, 0.8);
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #0f0f0f 100%);
+            padding: 50px 40px;
+            border: 1px solid rgba(201, 169, 97, 0.2);
+            border-top: 4px solid var(--gold);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .card p {
+            color: rgba(250, 249, 246, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Rules Banner */
+        .rules-banner {
+            background: linear-gradient(135deg, var(--cream) 0%, #E8E6DC 100%);
+            color: var(--maroon);
+            padding: 60px 50px;
+            text-align: center;
+            margin: 80px 0;
+            border-left: 12px solid var(--maroon);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .rules-banner::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            bottom: 20px;
+            left: 20px;
+            border: 2px solid rgba(139, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .rules-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rules-banner p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: var(--charcoal);
+            padding: 80px 0;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .form-box {
+            background: linear-gradient(135deg, #1f1f1f 0%, #0f0f0f 100%);
+            padding: 50px;
+            border: 1px solid rgba(201, 169, 97, 0.3);
+            border-top: 6px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-box h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        input, select {
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(201, 169, 97, 0.3);
+            color: var(--cream);
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(201, 169, 97, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(250, 249, 246, 0.5);
+        }
+
+        .submit-btn {
+            background: var(--maroon);
+            color: var(--cream);
+            border: 2px solid var(--gold);
+            padding: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s ease;
+            z-index: 0;
+        }
+
+        .submit-btn:hover::before {
+            left: 0;
+        }
+
+        .submit-btn:hover {
+            color: var(--charcoal);
+            box-shadow: 0 8px 30px rgba(201, 169, 97, 0.4);
+        }
+
+        .submit-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 80px 20px;
+            background: #000;
+            border-top: 3px solid var(--gold);
+            color: rgba(250, 249, 246, 0.5);
+        }
+
+        footer p {
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 3.5rem; }
+            .est-badge {
+                width: 80px;
+                height: 80px;
+                top: 20px;
+                left: 20px;
+            }
+            .est-badge .year { font-size: 1.4rem; }
+            .est-badge .est { font-size: 0.75rem; }
+            .prize-section { padding: 20px 30px; }
+            .prize-amount { font-size: 2.5rem; }
+            .form-box { padding: 35px 25px; }
+        }
+
+        @media (max-width: 480px) {
+            .cta-buttons { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="est-badge">
+            <span class="est">EST</span>
+            <span class="year">2026</span>
+        </div>
+
+        <div class="sparks" id="spark-container"></div>
+
+        <div class="hero-content">
+            <div class="event-subtitle">Louisville, Mississippi</div>
+            <h1>Battle of the Bones</h1>
+            <p class="tagline">An Annual Tradition of BBQ Excellence</p>
+            
+            <div class="prize-section">
+                <span class="prize-label">Grand Prize</span>
+                <div class="prize-amount">$500</div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="#cook-form" class="btn btn-primary">Cook Entry — $75</a>
+                <a href="#judge-form" class="btn btn-secondary">Judge Pass — $25</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="dates-strip">
+        <div class="dates-container">
+            <div class="date-card">
+                <div class="date-label">Registration Opens</div>
+                <div class="date-value">February 1</div>
+                <div class="date-detail">2026</div>
+            </div>
+            <div class="date-card">
+                <div class="date-label">Entry Deadline</div>
+                <div class="date-value">April 5</div>
+                <div class="date-detail">Submit by midnight</div>
+            </div>
+            <div class="date-card">
+                <div class="date-card">
+                <div class="date-label">Competition Day</div>
+                <div class="date-value">June 19</div>
+                <div class="date-detail">Juneteenth Celebration</div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Who Should Compete</div>
+            <h2 class="section-title">Open to All Pitmasters</h2>
+            <p class="section-description">Whether you're slinging smoke in your backyard or running a renowned BBQ joint, this competition welcomes all who take their craft seriously.</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Home Cooks</h3>
+                <p>Transform your backyard reputation into recognition and a $500 cash prize. Show Louisville what you've been perfecting at home.</p>
+            </div>
+            <div class="card">
+                <h3>Professional Pitmasters</h3>
+                <p>Claim the title of Louisville's finest. Earn premier advertising and cement your legacy in our community.</p>
+            </div>
+        </div>
+
+        <div class="rules-banner">
+            <h2>Flavor is King</h2>
+            <p>Gas, Electric, Wood, or Charcoal — if it tastes exceptional, it belongs here.</p>
+        </div>
+
+        <div class="section-header">
+            <div class="section-label">Why This Matters</div>
+            <h2 class="section-title">More Than a Competition</h2>
+            <p class="section-description">Battle of the Bones celebrates our community's rich culinary heritage and brings together the best pitmasters in Louisville for a day of exceptional BBQ and fellowship.</p>
+        </div>
+    </div>
+
+    <section class="form-section">
+        <div class="container">
+            <div class="grid">
+                <div class="form-box" id="cook-form">
+                    <h2>Cook Registration</h2>
+                    <form>
+                        <input type="text" placeholder="Team Name" required>
+                        <input type="text" placeholder="Contact Name" required>
+                        <input type="email" placeholder="Email Address" required>
+                        <input type="tel" placeholder="Phone Number" required>
+                        <button class="submit-btn" type="submit"><span>Register — $75</span></button>
+                    </form>
+                </div>
+                <div class="form-box" id="judge-form">
+                    <h2>Judge Registration</h2>
+                    <form>
+                        <input type="text" placeholder="Full Name" required>
+                        <input type="email" placeholder="Email Address" required>
+                        <input type="tel" placeholder="Phone Number" required>
+                        <select required>
+                            <option value="">Number of Passes</option>
+                            <option value="1">1 Pass — $25</option>
+                            <option value="2">2 Passes — $50</option>
+                            <option value="family">Family (4+) — $25</option>
+                        </select>
+                        <button class="submit-btn" type="submit"><span>Get Judge Pass</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">Battle of the Bones</div>
+        <p>© 2026 Battle of the Bones | Louisville, Mississippi | An Annual BBQ Championship</p>
+    </footer>
+
+    <script>
+        // Generate sparks/embers
+        const container = document.getElementById('spark-container');
+        for (let i = 0; i < 40; i++) {
+            const spark = document.createElement('div');
+            spark.className = 'spark';
+            spark.style.left = Math.random() * 100 + '%';
+            spark.style.setProperty('--duration', (Math.random() * 4 + 3) + 's');
+            spark.style.setProperty('--drift', (Math.random() * 150 - 75) + 'px');
+            spark.style.animationDelay = Math.random() * 6 + 's';
+            container.appendChild(spark);
+        }
+
+        // Smooth scroll for CTA buttons
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
